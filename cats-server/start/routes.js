@@ -15,9 +15,17 @@
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
-Route.post('file','FileController.store')
-Route.get('files/:file','FileController.show')
-Route.get('files','FileController.index')
 
-Route.resource('gatos','CatController').apiOnly()
-Route.get('status','CatController.status')
+Route.post('/users', 'UserController.create')
+Route.post('/sessions', 'SessionController.create')
+
+
+
+
+Route.group(() => {
+    Route.post('file','FileController.store')
+    Route.get('files/:file','FileController.show')
+    Route.get('files','FileController.index')
+    Route.resource('gatos','CatController').apiOnly()
+    Route.get('status','CatController.status')
+  }).middleware(['auth'])
