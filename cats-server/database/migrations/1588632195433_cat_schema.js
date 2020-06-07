@@ -7,7 +7,7 @@ class CatSchema extends Schema {
   up () {
     this.create('cats', (table) => {
       table.increments()
-      table.string('name')
+      table.string('name').notNullable()
       table.enu('sexo',['m','f']).notNullable()
       table.string('local')
       table.enu('castrado',['s','n'])
@@ -15,6 +15,7 @@ class CatSchema extends Schema {
       table.enu('tempo',['s','n'])
       table.string('status')
       table.text('desc')
+      table.string('path').notNullable()
       table.timestamps()
     })
   }

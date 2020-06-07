@@ -1,19 +1,17 @@
 'use strict'
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
 
-/**
- * Resourceful controller for interacting with cats
- */
-const Database = use('Database')
+//const Database = use('Database')
 const cat = use('App/Models/Cat')
+const Helpers = use('Helpers')
+//const File = use('App/Models/File')
+const Env = use('Env')
 class CatController {
 
   async index ({ request, response, view }) {
-    const cats = await cat.all()
-    return cats
+    const Gatos = await cat.all()
+    
+    return Gatos
   }
 
   async status(){
@@ -27,13 +25,40 @@ class CatController {
   
   async store ({ request, response }) {
     const data = request.only(['name','sexo','local','castrado','adotado','tempo','status','desc'])
-    const Register = cat.create(data)
-    return Register
+    const validadeOptions = {
+      types:['image'],
+      size:'2mb'
+    }
+    const file = request.file('file',validadeOptions)
+    
+    
+    
+    await file.move(Helpers.tmpPath('uploads'),{
+      name:`${new Date().getTime()}.${file.subtype}`
+    })
+    if (!file.moved()){
+      return file.error()
+    }
+    const fileModel = await cat.create({
+      
+      name:file.fileName,
+      sexo:data.sexo,
+      local:data.local,
+      castrado:data.castrado,
+      adotado:data.adotado,
+      tempo:data.tempo,
+      status:data.status,
+      desc:data.desc,
+      path:`${Env.get('APP_URL')}/files/${file.fileName}`,
+    })
+    return fileModel
   }
 
   
-  async show ({ params}) {
+  async show ({params}) {
     const catUnique = await cat.findOrFail(params.id)
+    await catUnique.load('files')
+    const IMG = catUnique.files.path
     return catUnique
   }
 
