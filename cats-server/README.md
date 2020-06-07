@@ -26,3 +26,9 @@ Run the following command to run startup migrations.
 ```js
 adonis migration:run
 ```
+# Lembre-se de tem em sua maquina o adonisJS instalado junto com o gerciador de pacotes.
+antes de iniciar o projeto , confira se você tem um arquivo de .env 
+```bash
+source .env
+```
+caso não tenha crie um usando o .env.exemple 
