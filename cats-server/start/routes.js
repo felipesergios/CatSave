@@ -20,7 +20,10 @@ Route.post('/users', 'UserController.create')
 Route.post('/sessions', 'SessionController.create')
 
 
-Route.resource('gatos','CatController').apiOnly()
+Route.resource('gatos','CatController').apiOnly().validator(new Map([
+  [['gatos.store'], ['CatRules']]
+]))
+
 Route.get('files/:file','FileController.show')
 
 Route.group(() => {

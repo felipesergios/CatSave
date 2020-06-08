@@ -4,7 +4,8 @@
 //const Database = use('Database')
 const cat = use('App/Models/Cat')
 const Helpers = use('Helpers')
-const { validate } = use('Validator')
+//const { validate } = use('Validator')
+
 //const File = use('App/Models/File')
 const Env = use('Env')
 class CatController {
@@ -27,25 +28,11 @@ class CatController {
   async store ({ request }) {
    
 
-
-
-
-    const rules = {
-      name: 'required',
-      sexo: 'required|max:1',
-      local:'max:30',
-      castrado:'required|max:1',
-      adotado:'required|max:3',
-      tempo:'max:30',
-      status:'required',
-      desc:'max:40'
-    }
-
     const data = request.only(['name','sexo','local','castrado','adotado','tempo','status','desc'])
-    const validation = await validate(data, rules)
-    if (validation.fails()) {
+    //const validation = await validate(data, rules)
+    /*if (validation.fails()) {
       return validation.messages()
-    }
+    }*/
     const validadeOptions = {
       types:['image'],
       size:'2mb'
